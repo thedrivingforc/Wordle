@@ -58,6 +58,30 @@ export default function App() {
     return row === curRow && col === curCol;
   };
 
+  const getCellBGColor = (row, col) => {
+    const letter = rows[row][col];
+    if (row >= curRow) {
+      return colors.black;
+    }
+    if (letter === letters[col]) {
+      return colors.primary;
+    }
+    if (letters.includes(letter)) {
+      return colors.secondary;
+    }
+    return colors.darkgrey;
+  };
+
+  const getAllLettersWithColors = (color) => {
+    return rows.flatMap((row, i) =>
+      row.filter((cell, j) => getCellBGColor(i, j) === color)
+    );
+  };
+
+  const greenCaps = getAllLettersWithColors(colors.primary);
+  const yellowCaps = getAllLettersWithColors(colors.secondary);
+  const greyCaps = getAllLettersWithColors(colors.darkgrey);
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
@@ -67,7 +91,7 @@ export default function App() {
       <ScrollView style={styles.map}>
         {rows.map((row, i) => (
           <View key={`row-${i}`} style={styles.row}>
-            {row.map((cell, j) => (
+            {row.map((letter, j) => (
               <View
                 key={`cell-${i}-${j}`}
                 style={[
@@ -76,17 +100,24 @@ export default function App() {
                     borderColor: isCellActive(i, j)
                       ? colors.grey
                       : colors.darkgrey,
+
+                    backgroundColor: getCellBGColor(i, j),
                   },
                 ]}
               >
-                <Text style={styles.cellText}>{cell.toUpperCase()}</Text>
+                <Text style={styles.cellText}>{letter.toUpperCase()}</Text>
               </View>
             ))}
           </View>
         ))}
       </ScrollView>
 
-      <Keyboard onKeyPressed={onKeyPressed} />
+      <Keyboard
+        onKeyPressed={onKeyPressed}
+        greenCaps={greenCaps}
+        yellowCaps={yellowCaps}
+        greyCaps={greyCaps}
+      />
     </SafeAreaView>
   );
 }
@@ -107,7 +138,6 @@ const styles = StyleSheet.create({
   map: {
     marginVertical: 35, // TODO: expected 20
     alignSelf: "stretch",
-    height: 100,
   },
   row: {
     alignSelf: "stretch",
