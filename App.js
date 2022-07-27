@@ -8,8 +8,9 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
-import { colors, CLEAR, ENTER } from "./src/constants";
+import { colors, CLEAR, ENTER, colorsToEmoji } from "./src/constants";
 import Keyboard from "./src/components/Keyboard";
+import * as Clipboard from "expo-clipboard";
 
 const NUMBER_OF_TRIES = 6;
 
@@ -35,13 +36,27 @@ export default function App() {
   }, [curRow]);
 
   const checkGameState = () => {
-    if (checkIfWon()) {
-      Alert.alert("Huraay", "You won!");
+    if (checkIfWon() && gameState !== "won") {
+      Alert.alert("Huraay", "You won!", [
+        { text: "share", onPress: shareScore },
+      ]);
       setGameState("won");
-    } else if (checkIfLost()) {
+    } else if (checkIfLost() && gameState !== "lost") {
       Alert.alert("Meh", "Try again tommorow!");
       setGameState("lost");
     }
+  };
+
+  const shareScore = () => {
+    const textShare = rows
+      .map((row, i) =>
+        row.map((cell, j) => colorsToEmoji[getCellBGColor(i, j)]).join("")
+      )
+      .filter((row) => row)
+      .join("\n");
+    const textToShare = `Wordle \n${textShare}`;
+    Clipboard.setStringAsync(textToShare);
+    Alert.alert("Copied to clipboard", "Paste and share!");
   };
 
   const checkIfWon = () => {
@@ -50,7 +65,7 @@ export default function App() {
     return row.every((letter, i) => letter === letters[i]);
   };
   const checkIfLost = () => {
-    return curRow === rows.length;
+    return !checkIfWon() && curRow === rows.length;
   };
 
   const onKeyPressed = (key) => {
