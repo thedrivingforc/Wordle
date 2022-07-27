@@ -1,6 +1,12 @@
 import { useState } from "react";
-import { StatusBar } from "react-native";
-import { StyleSheet, Text, View, SafeAreaView, ScrollView } from "react-native";
+import {
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  ScrollView,
+} from "react-native";
 import { colors, CLEAR, ENTER } from "./src/constants";
 import Keyboard from "./src/components/Keyboard";
 
