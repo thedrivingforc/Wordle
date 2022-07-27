@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   StatusBar,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   View,
   SafeAreaView,
   ScrollView,
+  Alert,
 } from "react-native";
 import { colors, CLEAR, ENTER } from "./src/constants";
 import Keyboard from "./src/components/Keyboard";
@@ -25,8 +26,38 @@ export default function App() {
   );
   const [curRow, setCurRow] = useState(0);
   const [curCol, setCurCol] = useState(0);
+  const [gameState, setGameState] = useState("playing"); // playing, won, lost
+
+  useEffect(() => {
+    if (curRow > 0) {
+      checkGameState();
+    }
+  }, [curRow]);
+
+  const checkGameState = () => {
+    if (checkIfWon()) {
+      Alert.alert("Huraay", "You won!");
+      setGameState("won");
+    } else if (checkIfLost()) {
+      Alert.alert("Meh", "Try again tommorow!");
+      setGameState("lost");
+    }
+  };
+
+  const checkIfWon = () => {
+    const row = rows[curRow - 1];
+
+    return row.every((letter, i) => letter === letters[i]);
+  };
+  const checkIfLost = () => {
+    return curRow === rows.length;
+  };
 
   const onKeyPressed = (key) => {
+    if (gameState !== "playing") {
+      return;
+    }
+
     const updatedRows = copyArray(rows);
 
     if (key === CLEAR) {
