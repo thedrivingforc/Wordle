@@ -1,6 +1,7 @@
 import { StatusBar } from "react-native";
 import { StyleSheet, Text, View, SafeAreaView } from "react-native";
 import { colors } from "./src/constants";
+import Keyboard from "./src/components/Keyboard";
 
 export default function App() {
   return (
@@ -8,6 +9,7 @@ export default function App() {
       <StatusBar style="light" />
 
       <Text style={styles.title}>WORDLE</Text>
+      <Keyboard />
     </SafeAreaView>
   );
 }
