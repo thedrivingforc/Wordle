@@ -26,7 +26,7 @@ export default function App() {
     if (key === CLEAR) {
       const prevCol = curCol - 1;
       if (prevCol >= 0) {
-        updatedRows[curRow][curCol] = "";
+        updatedRows[curRow][prevCol] = "";
         setRows(updatedRows);
         setCurCol(prevCol);
       }
