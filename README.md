@@ -1,8 +1,18 @@
-# WORDLE
+# WORDLE in REACT NATIVE
 
-### Ideas =>
+## Ideas
 
-[] Add various keyboards and allow user to select before starting.
-[] Improve Alert box Style
-[] Refactor Code
-[] Improve share alert box and add more options.
+- [x] Add various keyboards and allow user to select before starting.
+- [ ] Improve Alert box Style and add more options.
+- [ ] Refactor Code
+
+## TODO
+
+- [ ]
+
+`Use these to track task progress`
+&cross;
+&check;
+
+<!-- :white_check_mark
+:white_large_square; -->
